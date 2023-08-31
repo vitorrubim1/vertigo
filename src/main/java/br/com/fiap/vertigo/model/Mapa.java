@@ -1,12 +1,22 @@
 package br.com.fiap.vertigo.model;
 
+import java.util.Objects;
+
 public class Mapa {
+    private Long id;
     private String nome_mapa;
 
-    public Mapa() { }
-
-    public Mapa(String nome_mapa) {
+    public Mapa(Long id, String nome_mapa) {
+        this.id = id;
         this.nome_mapa = nome_mapa;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome_mapa() {
@@ -18,32 +28,22 @@ public class Mapa {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((nome_mapa == null) ? 0 : nome_mapa.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Mapa mapa)) return false;
+        return Objects.equals(getId(), mapa.getId()) && Objects.equals(getNome_mapa(), mapa.getNome_mapa());
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Mapa other = (Mapa) obj;
-        if (nome_mapa == null) {
-            if (other.nome_mapa != null)
-                return false;
-        } else if (!nome_mapa.equals(other.nome_mapa))
-            return false;
-        return true;
+    public int hashCode() {
+        return Objects.hash(getId(), getNome_mapa());
     }
 
     @Override
     public String toString() {
-        return "Mapa [nome_mapa=" + nome_mapa + "]";
+        return "Mapa{" +
+                "id=" + id +
+                ", nome_mapa='" + nome_mapa + '\'' +
+                '}';
     }
 }
