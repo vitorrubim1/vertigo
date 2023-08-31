@@ -52,14 +52,14 @@ public class MapaController {
     }
 
     @PutMapping("/mapas/{id}")
-    public ResponseEntity<Mapa> update(@PathVariable Long id, @RequestBody Mapa categoria) {
+    public ResponseEntity<Mapa> update(@PathVariable Long id, @RequestBody Mapa mapa) {
         Mapa mapaEncontrado = findMapaById(id);
         if (mapaEncontrado == null) return ResponseEntity.notFound().build();
 
         mapas.remove(mapaEncontrado);
-        categoria.setId(id);
-        mapas.add(categoria);
+        mapa.setId(id);
+        mapas.add(mapa);
 
-        return ResponseEntity.ok(categoria);
+        return ResponseEntity.ok(mapa);
     }
 }

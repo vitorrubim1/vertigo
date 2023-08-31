@@ -1,20 +1,33 @@
 package br.com.fiap.vertigo.model;
 
+import java.util.Objects;
+
 public class Time {
+    private Long id;
     private int vitorias;
     private int derrotas;
     private int empates;
     private String imagem;
     private String nome;
-    
-    public Time() { }
 
-    public Time(int vitorias, int derrotas, int empates, String imagem, String nome) {
+    public Time(Long id, int vitorias, int derrotas, int empates, String imagem, String nome) {
+        this.id = id;
         this.vitorias = vitorias;
         this.derrotas = derrotas;
         this.empates = empates;
         this.imagem = imagem;
         this.nome = nome;
+    }
+
+    public Time() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getVitorias() {
@@ -58,48 +71,26 @@ public class Time {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + vitorias;
-        result = prime * result + derrotas;
-        result = prime * result + empates;
-        result = prime * result + ((imagem == null) ? 0 : imagem.hashCode());
-        result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Time time)) return false;
+        return getVitorias() == time.getVitorias() && getDerrotas() == time.getDerrotas() && getEmpates() == time.getEmpates() && Objects.equals(getId(), time.getId()) && Objects.equals(getImagem(), time.getImagem()) && Objects.equals(getNome(), time.getNome());
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Time other = (Time) obj;
-        if (vitorias != other.vitorias)
-            return false;
-        if (derrotas != other.derrotas)
-            return false;
-        if (empates != other.empates)
-            return false;
-        if (imagem == null) {
-            if (other.imagem != null)
-                return false;
-        } else if (!imagem.equals(other.imagem))
-            return false;
-        if (nome == null) {
-            if (other.nome != null)
-                return false;
-        } else if (!nome.equals(other.nome))
-            return false;
-        return true;
+    public int hashCode() {
+        return Objects.hash(getId(), getVitorias(), getDerrotas(), getEmpates(), getImagem(), getNome());
     }
 
     @Override
     public String toString() {
-        return "Time [vitorias=" + vitorias + ", derrotas=" + derrotas + ", empates=" + empates + ", imagem=" + imagem
-                + ", nome=" + nome + "]";
+        return "Time{" +
+                "id=" + id +
+                ", vitorias=" + vitorias +
+                ", derrotas=" + derrotas +
+                ", empates=" + empates +
+                ", imagem='" + imagem + '\'' +
+                ", nome='" + nome + '\'' +
+                '}';
     }
 }

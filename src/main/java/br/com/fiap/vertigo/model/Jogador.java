@@ -1,20 +1,33 @@
 package br.com.fiap.vertigo.model;
 
+import java.util.Objects;
+
 public class Jogador {
+    Long id;
     private String nome_jogador;
     private int numero_partida;
     private int kill;
     private int death;
-    private Time time;
-    
-    public Jogador() { }
+    private Long time;
 
-    public Jogador(String nome_jogador, int numero_partida, int kill, int death, Time time) {
+    public Jogador() {
+    }
+
+    public Jogador(Long id, String nome_jogador, int numero_partida, int kill, int death, Long time) {
+        this.id = id;
         this.nome_jogador = nome_jogador;
         this.numero_partida = numero_partida;
         this.kill = kill;
         this.death = death;
         this.time = time;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome_jogador() {
@@ -49,57 +62,35 @@ public class Jogador {
         this.death = death;
     }
 
-    public Time getTime() {
+    public Long getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(Long time) {
         this.time = time;
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((nome_jogador == null) ? 0 : nome_jogador.hashCode());
-        result = prime * result + numero_partida;
-        result = prime * result + kill;
-        result = prime * result + death;
-        result = prime * result + ((time == null) ? 0 : time.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Jogador jogador)) return false;
+        return getNumero_partida() == jogador.getNumero_partida() && getKill() == jogador.getKill() && getDeath() == jogador.getDeath() && Objects.equals(getId(), jogador.getId()) && Objects.equals(getNome_jogador(), jogador.getNome_jogador()) && Objects.equals(getTime(), jogador.getTime());
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Jogador other = (Jogador) obj;
-        if (nome_jogador == null) {
-            if (other.nome_jogador != null)
-                return false;
-        } else if (!nome_jogador.equals(other.nome_jogador))
-            return false;
-        if (numero_partida != other.numero_partida)
-            return false;
-        if (kill != other.kill)
-            return false;
-        if (death != other.death)
-            return false;
-        if (time == null) {
-            if (other.time != null)
-                return false;
-        } else if (!time.equals(other.time))
-            return false;
-        return true;
+    public int hashCode() {
+        return Objects.hash(getId(), getNome_jogador(), getNumero_partida(), getKill(), getDeath(), getTime());
     }
 
     @Override
     public String toString() {
-        return "Jogador [nome_jogador=" + nome_jogador + ", numero_partida=" + numero_partida + ", kill=" + kill
-                + ", death=" + death + ", time=" + time + "]";
+        return "Jogador{" +
+                "id=" + id +
+                ", nome_jogador='" + nome_jogador + '\'' +
+                ", numero_partida=" + numero_partida +
+                ", kill=" + kill +
+                ", death=" + death +
+                ", time=" + time +
+                '}';
     }
 }

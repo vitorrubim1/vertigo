@@ -25,10 +25,10 @@ public class UsuarioController {
     }
 
     @PostMapping("/usuarios")
-    public ResponseEntity<Usuario> create(@RequestBody Usuario Usuario) {
-        Usuario.setId(usuarios.size() + 1L);
-        usuarios.add(Usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(Usuario);
+    public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
+        usuario.setId(usuarios.size() + 1L);
+        usuarios.add(usuario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
     }
 
     @GetMapping("/usuarios/{id}")
@@ -52,14 +52,14 @@ public class UsuarioController {
     }
 
     @PutMapping("/usuarios/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario categoria) {
+    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario usuario) {
         Usuario usuarioEncontrado = findUsuarioById(id);
         if (usuarioEncontrado == null) return ResponseEntity.notFound().build();
 
         usuarios.remove(usuarioEncontrado);
-        categoria.setId(id);
-        usuarios.add(categoria);
+        usuario.setId(id);
+        usuarios.add(usuario);
 
-        return ResponseEntity.ok(categoria);
+        return ResponseEntity.ok(usuario);
     }
 }
