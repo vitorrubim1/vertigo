@@ -3,17 +3,24 @@ package br.com.fiap.vertigo.model;
 import java.util.Arrays;
 
 public class Campeonato {
+
+    private Long id;
     private String nome_campeonato;
     private int quantidade_partida;
     private Partida[] proximas_partidas;
     
     public Campeonato() { }
 
-    public Campeonato(String nome_campeonato, int quantidade_partida, Partida[] proximas_partidas) {
+    public Campeonato(Long id, String nome_campeonato, int quantidade_partida, Partida[] proximas_partidas) {
+        this.id = id;
         this.nome_campeonato = nome_campeonato;
         this.quantidade_partida = quantidade_partida;
         this.proximas_partidas = proximas_partidas;
     }
+
+    public Long getId() {return id;}
+
+    public void setId(Long id) {this.id = id;}
 
     public String getNome_campeonato() {
         return nome_campeonato;
@@ -58,6 +65,8 @@ public class Campeonato {
         if (getClass() != obj.getClass())
             return false;
         Campeonato other = (Campeonato) obj;
+        if (id != other.id)
+            return false;
         if (nome_campeonato == null) {
             if (other.nome_campeonato != null)
                 return false;
@@ -72,7 +81,8 @@ public class Campeonato {
 
     @Override
     public String toString() {
-        return "Campeonato [nome_campeonato=" + nome_campeonato + ", quantidade_partida=" + quantidade_partida
-                + ", proximas_partidas=" + Arrays.toString(proximas_partidas) + "]";
+        return "Campeonato [id=" + id + ", nome_campeonato=" + nome_campeonato +
+                ", quantidade_partida=" + quantidade_partida +
+                ", proximas_partidas=" + Arrays.toString(proximas_partidas) + "]";
     }
 }
