@@ -2,18 +2,27 @@ package br.com.fiap.vertigo.model;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Partida {
+    private Long id;
     private Time[] time;
     private LocalDateTime data_partida;
     private Campeonato nome_campeonato;
     private int mortes;
     private Mapa mapa;
-    
-    
-    public Partida() {}
 
-     public Time[] getTime() {
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Time[] getTime() {
         return time;
     }
 
@@ -53,25 +62,7 @@ public class Partida {
         this.mapa = mapa;
     }
 
-    public Partida(Time[] time, LocalDateTime data_partida, Campeonato nome_campeonato, int mortes, Mapa mapa) {
-        this.time = time;
-        this.data_partida = data_partida;
-        this.nome_campeonato = nome_campeonato;
-        this.mortes = mortes;
-        this.mapa = mapa;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + Arrays.hashCode(time);
-        result = prime * result + ((data_partida == null) ? 0 : data_partida.hashCode());
-        result = prime * result + ((nome_campeonato == null) ? 0 : nome_campeonato.hashCode());
-        result = prime * result + mortes;
-        result = prime * result + ((mapa == null) ? 0 : mapa.hashCode());
-        return result;
-    }
+    public Partida() {}
 
     @Override
     public boolean equals(Object obj) {
@@ -101,14 +92,27 @@ public class Partida {
                 return false;
         } else if (!mapa.equals(other.mapa))
             return false;
+        if (id != other.id)
+            return false;
         return true;
     }
 
     @Override
-    public String toString() {
-        return "Partida [time=" + Arrays.toString(time) + ", data_partida=" + data_partida + ", nome_campeonato="
-                + nome_campeonato + ", mortes=" + mortes + ", mapa=" + mapa + "]";
+    public int hashCode() {
+        return Objects.hash(id, time, data_partida, nome_campeonato, mortes, mapa);
     }
-}
 
+    @Override
+    public String toString() {
+        return "Partida{" +
+                "id=" + id +
+                ", time=" + Arrays.toString(time) +
+                ", data_partida=" + data_partida +
+                ", nome_campeonato=" + nome_campeonato +
+                ", mortes=" + mortes +
+                ", mapa=" + mapa +
+                '}';
+    }
+
+}
 
