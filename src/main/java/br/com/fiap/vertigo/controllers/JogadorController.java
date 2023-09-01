@@ -27,15 +27,7 @@ public class JogadorController {
     }
 
     @PostMapping("/jogadores")
-    public ResponseEntity<Jogador> create(@RequestBody Jogador jogador) {
-        Time time = new Time();
-
-//        Time time = new Time();
-//        Time timeEncontrado = time.getId(jogador.getTime());
-//
-//        if (timeEncontrado = null) return ResponseEntity.notFound().build();
-
-
+    public ResponseEntity<Object> create(@RequestBody Jogador jogador) {
         jogador.setId(jogadores.size() + 1L);
         jogadores.add(jogador);
         return ResponseEntity.status(HttpStatus.CREATED).body(jogador);

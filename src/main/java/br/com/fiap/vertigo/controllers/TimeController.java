@@ -13,9 +13,9 @@ public class TimeController {
 
     List<Time> times = new ArrayList<>();
 
-    private Time findTimeById(Long id) {
+    public Time findTimeById(Long id) {
         return times.stream()
-                .filter(Time -> Time.getId().equals(id))
+                .filter(time -> time.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
