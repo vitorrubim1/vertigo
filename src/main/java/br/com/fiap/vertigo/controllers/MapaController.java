@@ -1,6 +1,7 @@
 package br.com.fiap.vertigo.controllers;
 
 import br.com.fiap.vertigo.model.Mapa;
+import br.com.fiap.vertigo.model.Partida;
 import br.com.fiap.vertigo.repository.MapaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import java.util.Optional;
 public class MapaController {
 
     @Autowired
-    private MapaRepository mapaRepository;
+    MapaRepository mapaRepository;
 
     @GetMapping
     public List<Mapa> index() {
@@ -28,30 +29,23 @@ public class MapaController {
     }
 
     @GetMapping("/mapas/{id}")
-    public ResponseEntity<Mapa> show(@PathVariable Long id) {
-        Optional<Mapa> mapaEncontrado = mapaRepository.findById(id);
-
-        return mapaEncontrado.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
+    public ResponseEntity<Mapa> show(@PathVariable Long id) {return ResponseEntity.ok(getMapaById(id));}
 
     @DeleteMapping("/mapas/{id}")
-    public ResponseEntity<Object> destroy(@PathVariable Long id) {
-        if (mapaRepository.existsById(id)) {
-            mapaRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+    public ResponseEntity<Object> destroy (@PathVariable Long id){
+        mapaRepository.delete(getMapaById(id));
+
+        return ResponseEntity.noContent().build();}
 
     @PutMapping("/mapas/{id}")
     public ResponseEntity<Mapa> update(@PathVariable Long id, @RequestBody Mapa mapa) {
-        if (mapaRepository.existsById(id)) {
-            mapa.setId(id);
-            mapaRepository.save(mapa);
-            return ResponseEntity.ok(mapa);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        getMapaById(id);
+        mapa.setId(id);
+        mapaRepository.save(mapa);
+
+        return ResponseEntity.ok(mapa);
+    }
+    private Mapa getMapaById(Long id) {
+        return mapaRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 }

@@ -1,6 +1,7 @@
 package br.com.fiap.vertigo.controllers;
 
 import br.com.fiap.vertigo.model.Jogador;
+import br.com.fiap.vertigo.model.Mapa;
 import br.com.fiap.vertigo.repository.JogadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import java.util.Optional;
 public class JogadorController {
 
     @Autowired
-    private JogadorRepository jogadorRepository;
+    JogadorRepository jogadorRepository;
 
     @GetMapping
     public List<Jogador> index() {
@@ -23,44 +24,28 @@ public class JogadorController {
 
     @PostMapping
     public ResponseEntity<Jogador> create(@RequestBody Jogador jogador) {
-        Jogador novoJogador = jogadorRepository.save(jogador);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoJogador);
+        jogadorRepository.save(jogador);
+        return ResponseEntity.status(HttpStatus.CREATED).body(jogador);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Jogador> show(@PathVariable Long id) {
-        Optional<Jogador> jogadorEncontrado = jogadorRepository.findById(id);
-
-        if (jogadorEncontrado.isPresent()) {
-            return ResponseEntity.ok(jogadorEncontrado.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+    public ResponseEntity<Jogador> show(@PathVariable Long id) {return ResponseEntity.ok(getJogadorById(id));}
 
     @DeleteMapping("/jogadores/{id}")
-    public ResponseEntity<Object> destroy(@PathVariable Long id) {
-        if (jogadorRepository.existsById(id)) {
-            jogadorRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+    public ResponseEntity<Object> destroy (@PathVariable Long id){
+        jogadorRepository.delete(getJogadorById(id));
+
+        return ResponseEntity.noContent().build();}
 
     @PutMapping("/jogadores/{id}")
     public ResponseEntity<Jogador> update(@PathVariable Long id, @RequestBody Jogador jogador) {
-        if (jogadorRepository.existsById(id)) {
-            jogador.setId(id);
-            Jogador jogadorAtualizado = jogadorRepository.save(jogador);
-            return ResponseEntity.ok(jogadorAtualizado);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+        getJogadorById(id);
+        jogador.setId(id);
+        jogadorRepository.save(jogador);
 
-    @GetMapping("/jogadores/{nome_jogador}")
-    public List<Jogador> findByNome(@PathVariable String nome_jogador) {
-        return jogadorRepository.findByNome_jogador(nome_jogador);
+        return ResponseEntity.ok(jogador);
+    }
+    private Jogador getJogadorById(Long id) {
+        return jogadorRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 }

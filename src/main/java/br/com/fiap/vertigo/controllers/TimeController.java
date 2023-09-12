@@ -1,6 +1,7 @@
 package br.com.fiap.vertigo.controllers;
 
 import br.com.fiap.vertigo.model.Time;
+import br.com.fiap.vertigo.model.Usuario;
 import br.com.fiap.vertigo.repository.TimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import java.util.Optional;
 public class TimeController {
 
     @Autowired
-    private TimeRepository timeRepository;
+    TimeRepository timeRepository;
 
     @GetMapping
     public List<Time> index() {
@@ -23,36 +24,31 @@ public class TimeController {
 
     @PostMapping
     public ResponseEntity<Time> create(@RequestBody Time time) {
-        time.setId(null);
-        Time savedTime = timeRepository.save(time);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedTime);
+        timeRepository.save(time);
+        return ResponseEntity.status(HttpStatus.CREATED).body(time);
     }
 
     @GetMapping("/times/{id}")
-    public ResponseEntity<Time> show(@PathVariable Long id) {
-        Optional<Time> timeEncontrado = timeRepository.findById(id);
-
-        return timeEncontrado.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
+    public ResponseEntity<Time> show(@PathVariable Long id)
+        {return ResponseEntity.ok(getTimeById(id));}
 
     @DeleteMapping("/times/{id}")
-    public ResponseEntity<Object> destroy(@PathVariable Long id) {
-        if (timeRepository.existsById(id)) {
-            timeRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+        public ResponseEntity<Object> destroy (@PathVariable Long id){
+            timeRepository.delete(getTimeById(id));
 
+            return ResponseEntity.noContent().build();}
     @PutMapping("/times/{id}")
-    public ResponseEntity<Time> update(@PathVariable Long id, @RequestBody Time time) {
-        if (timeRepository.existsById(id)) {
+        public ResponseEntity<Time> update (@PathVariable Long id, @RequestBody Time time){
+            getTimeById(id);
             time.setId(id);
-            Time updatedTime = timeRepository.save(time);
-            return ResponseEntity.ok(updatedTime);
-        } else {
-            return ResponseEntity.notFound().build();
+            timeRepository.save(time);
+
+            return ResponseEntity.ok(time);}
+    private Time getTimeById (Long id){
+            return timeRepository.findById(id).orElseThrow(RuntimeException::new);
         }
-    }
+
 }
+
+
+
