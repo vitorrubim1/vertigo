@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/times")
 public class TimeController {
 
     @Autowired
@@ -29,14 +28,14 @@ public class TimeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTime);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/times/{id}")
     public ResponseEntity<Time> show(@PathVariable Long id) {
         Optional<Time> timeEncontrado = timeRepository.findById(id);
 
         return timeEncontrado.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/times/{id}")
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
         if (timeRepository.existsById(id)) {
             timeRepository.deleteById(id);
@@ -46,7 +45,7 @@ public class TimeController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/times/{id}")
     public ResponseEntity<Time> update(@PathVariable Long id, @RequestBody Time time) {
         if (timeRepository.existsById(id)) {
             time.setId(id);

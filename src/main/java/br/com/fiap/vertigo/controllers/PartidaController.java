@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/partidas")
 public class PartidaController {
 
     @Autowired
@@ -29,14 +28,14 @@ public class PartidaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPartida);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/partidas/{id}")
     public ResponseEntity<Partida> show(@PathVariable Long id) {
         Optional<Partida> partidaEncontrada = partidaRepository.findById(id);
 
         return partidaEncontrada.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/partidas/{id}")
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
         if (partidaRepository.existsById(id)) {
             partidaRepository.deleteById(id);
@@ -46,7 +45,7 @@ public class PartidaController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/partidas/{id}")
     public ResponseEntity<Partida> update(@PathVariable Long id, @RequestBody Partida partida) {
         if (partidaRepository.existsById(id)) {
             partida.setId(id);

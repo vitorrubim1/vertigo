@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/campeonatos")
 public class CampeonatoController {
 
     @Autowired
@@ -29,14 +28,14 @@ public class CampeonatoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCampeonato);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/campeonatos/{id}")
     public ResponseEntity<Campeonato> show(@PathVariable Long id) {
         Optional<Campeonato> campeonatoEncontrado = campeonatoRepository.findById(id);
 
         return campeonatoEncontrado.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/campeonatos/{id}")
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
         if (campeonatoRepository.existsById(id)) {
             campeonatoRepository.deleteById(id);
@@ -46,7 +45,7 @@ public class CampeonatoController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/campeonatos/{id}")
     public ResponseEntity<Campeonato> update(@PathVariable Long id, @RequestBody Campeonato campeonato) {
         if (campeonatoRepository.existsById(id)) {
             campeonato.setId(id);

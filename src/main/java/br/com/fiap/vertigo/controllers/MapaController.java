@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/mapas")
 public class MapaController {
 
     @Autowired
@@ -28,14 +27,14 @@ public class MapaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(mapa);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/mapas/{id}")
     public ResponseEntity<Mapa> show(@PathVariable Long id) {
         Optional<Mapa> mapaEncontrado = mapaRepository.findById(id);
 
         return mapaEncontrado.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/mapas/{id}")
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
         if (mapaRepository.existsById(id)) {
             mapaRepository.deleteById(id);
@@ -45,7 +44,7 @@ public class MapaController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/mapas/{id}")
     public ResponseEntity<Mapa> update(@PathVariable Long id, @RequestBody Mapa mapa) {
         if (mapaRepository.existsById(id)) {
             mapa.setId(id);

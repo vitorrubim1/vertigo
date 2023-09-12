@@ -31,9 +31,7 @@ public class Partida {
         this.id = id;
     }
 
-    public Time[] getTime() {
-        return time;
-    }
+    public Time[] getTime() {return time;}
 
     public void setTime(Time[] time) {
         this.time = time;

@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/jogadores")
 public class JogadorController {
 
     @Autowired
@@ -39,7 +38,7 @@ public class JogadorController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/jogadores/{id}")
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
         if (jogadorRepository.existsById(id)) {
             jogadorRepository.deleteById(id);
@@ -49,7 +48,7 @@ public class JogadorController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/jogadores/{id}")
     public ResponseEntity<Jogador> update(@PathVariable Long id, @RequestBody Jogador jogador) {
         if (jogadorRepository.existsById(id)) {
             jogador.setId(id);
@@ -60,7 +59,7 @@ public class JogadorController {
         }
     }
 
-    @GetMapping("/nome/{nome_jogador}")
+    @GetMapping("/jogadores/{nome_jogador}")
     public List<Jogador> findByNome(@PathVariable String nome_jogador) {
         return jogadorRepository.findByNome_jogador(nome_jogador);
     }
