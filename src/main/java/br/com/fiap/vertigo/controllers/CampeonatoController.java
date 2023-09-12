@@ -1,64 +1,59 @@
 package br.com.fiap.vertigo.controllers;
 
 import br.com.fiap.vertigo.model.Campeonato;
+import br.com.fiap.vertigo.repository.CampeonatoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
+@RequestMapping("/campeonatos")
 public class CampeonatoController {
-    List<Campeonato> campeonatos = new ArrayList<>();
 
-    private Campeonato findCampeonatoById(Long id) {
-        return campeonatos.stream()
-                .filter(Campeonato -> Campeonato.getId().equals(id))
-                .findFirst()
-                .orElse(null);
-    }
-    @GetMapping("/campeonatos")
+    @Autowired
+    private CampeonatoRepository campeonatoRepository;
+
+    @GetMapping
     public List<Campeonato> index() {
-        return campeonatos;
+        return campeonatoRepository.findAll();
     }
 
-    @PostMapping("/campeonatos")
-    public ResponseEntity<Campeonato> create(@RequestBody Campeonato partida) {
-        partida.setId(campeonatos.size() + 1L);
-        campeonatos.add(partida);
-        return ResponseEntity.status(HttpStatus.CREATED).body(partida);
+    @PostMapping
+    public ResponseEntity<Campeonato> create(@RequestBody Campeonato campeonato) {
+        campeonato.setId(null);
+        Campeonato savedCampeonato = campeonatoRepository.save(campeonato);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedCampeonato);
     }
 
-    @GetMapping("/campeonatos/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Campeonato> show(@PathVariable Long id) {
-        Campeonato partidaEncontrado = findCampeonatoById(id);
+        Optional<Campeonato> campeonatoEncontrado = campeonatoRepository.findById(id);
 
-        if (partidaEncontrado == null) return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(partidaEncontrado);
+        return campeonatoEncontrado.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/campeonatos/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
-        Campeonato partidaEncontrado = findCampeonatoById(id);
-
-        if (partidaEncontrado == null) return ResponseEntity.notFound().build();
-
-        campeonatos.remove(partidaEncontrado);
-
-        return ResponseEntity.noContent().build();
+        if (campeonatoRepository.existsById(id)) {
+            campeonatoRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @PutMapping("/campeonatos/{id}")
-    public ResponseEntity<Campeonato> update(@PathVariable Long id, @RequestBody Campeonato partida) {
-        Campeonato partidaEncontrado = findCampeonatoById(id);
-        if (partidaEncontrado == null) return ResponseEntity.notFound().build();
-
-        campeonatos.remove(partidaEncontrado);
-        partida.setId(id);
-        campeonatos.add(partida);
-
-        return ResponseEntity.ok(partida);
+    @PutMapping("/{id}")
+    public ResponseEntity<Campeonato> update(@PathVariable Long id, @RequestBody Campeonato campeonato) {
+        if (campeonatoRepository.existsById(id)) {
+            campeonato.setId(id);
+            Campeonato updatedCampeonato = campeonatoRepository.save(campeonato);
+            return ResponseEntity.ok(updatedCampeonato);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

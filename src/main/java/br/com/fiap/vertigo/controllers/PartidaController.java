@@ -1,65 +1,59 @@
 package br.com.fiap.vertigo.controllers;
 
 import br.com.fiap.vertigo.model.Partida;
+import br.com.fiap.vertigo.repository.PartidaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
+@RequestMapping("/partidas")
 public class PartidaController {
-    List<Partida> partidas = new ArrayList<>();
 
-    private Partida findPartidaById(Long id) {
-        return partidas.stream()
-                .filter(Partida -> Partida.getId().equals(id))
-                .findFirst()
-                .orElse(null);
-    }
-    @GetMapping("/partidas")
+    @Autowired
+    private PartidaRepository partidaRepository;
+
+    @GetMapping
     public List<Partida> index() {
-        return partidas;
+        return partidaRepository.findAll();
     }
 
-    @PostMapping("/partidas")
+    @PostMapping
     public ResponseEntity<Partida> create(@RequestBody Partida partida) {
-        partida.setId(partidas.size() + 1L);
-        partidas.add(partida);
-        return ResponseEntity.status(HttpStatus.CREATED).body(partida);
+        partida.setId(null);
+        Partida savedPartida = partidaRepository.save(partida);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedPartida);
     }
 
-    @GetMapping("/partidas/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Partida> show(@PathVariable Long id) {
-        Partida partidaEncontrado = findPartidaById(id);
+        Optional<Partida> partidaEncontrada = partidaRepository.findById(id);
 
-        if (partidaEncontrado == null) return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(partidaEncontrado);
+        return partidaEncontrada.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/partidas/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
-        Partida partidaEncontrado = findPartidaById(id);
-
-        if (partidaEncontrado == null) return ResponseEntity.notFound().build();
-
-        partidas.remove(partidaEncontrado);
-
-        return ResponseEntity.noContent().build();
+        if (partidaRepository.existsById(id)) {
+            partidaRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @PutMapping("/partidas/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Partida> update(@PathVariable Long id, @RequestBody Partida partida) {
-        Partida partidaEncontrado = findPartidaById(id);
-        if (partidaEncontrado == null) return ResponseEntity.notFound().build();
-
-        partidas.remove(partidaEncontrado);
-        partida.setId(id);
-        partidas.add(partida);
-
-        return ResponseEntity.ok(partida);
+        if (partidaRepository.existsById(id)) {
+            partida.setId(id);
+            Partida updatedPartida = partidaRepository.save(partida);
+            return ResponseEntity.ok(updatedPartida);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
-

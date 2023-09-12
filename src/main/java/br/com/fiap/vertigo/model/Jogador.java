@@ -1,8 +1,16 @@
 package br.com.fiap.vertigo.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.util.Objects;
 
+@Entity
 public class Jogador {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     private String nome_jogador;
     private int numero_partida;
