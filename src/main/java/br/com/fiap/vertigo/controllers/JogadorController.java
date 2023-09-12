@@ -1,67 +1,67 @@
 package br.com.fiap.vertigo.controllers;
 
 import br.com.fiap.vertigo.model.Jogador;
-import br.com.fiap.vertigo.model.Time;
+import br.com.fiap.vertigo.repository.JogadorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
+@RequestMapping("/jogadores")
 public class JogadorController {
 
-    List<Jogador> jogadores = new ArrayList<>();
+    @Autowired
+    private JogadorRepository jogadorRepository;
 
-    private Jogador findJogadorById(Long id) {
-        return jogadores.stream()
-                .filter(Jogador -> Jogador.getId().equals(id))
-                .findFirst()
-                .orElse(null);
-    }
-
-    @GetMapping("/jogadores")
+    @GetMapping
     public List<Jogador> index() {
-        return jogadores;
+        return jogadorRepository.findAll();
     }
 
-    @PostMapping("/jogadores")
-    public ResponseEntity<Object> create(@RequestBody Jogador jogador) {
-        jogador.setId(jogadores.size() + 1L);
-        jogadores.add(jogador);
-        return ResponseEntity.status(HttpStatus.CREATED).body(jogador);
+    @PostMapping
+    public ResponseEntity<Jogador> create(@RequestBody Jogador jogador) {
+        Jogador novoJogador = jogadorRepository.save(jogador);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novoJogador);
     }
 
-    @GetMapping("/jogadores/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Jogador> show(@PathVariable Long id) {
-        Jogador jogadorEncontrado = findJogadorById(id);
+        Optional<Jogador> jogadorEncontrado = jogadorRepository.findById(id);
 
-        if (jogadorEncontrado == null) return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(jogadorEncontrado);
+        if (jogadorEncontrado.isPresent()) {
+            return ResponseEntity.ok(jogadorEncontrado.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @DeleteMapping("/jogadores/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
-        Jogador jogadorEncontrado = findJogadorById(id);
-
-        if (jogadorEncontrado == null) return ResponseEntity.notFound().build();
-
-        jogadores.remove(jogadorEncontrado);
-
-        return ResponseEntity.noContent().build();
+        if (jogadorRepository.existsById(id)) {
+            jogadorRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @PutMapping("/jogadores/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Jogador> update(@PathVariable Long id, @RequestBody Jogador jogador) {
-        Jogador jogadorEncontrado = findJogadorById(id);
-        if (jogadorEncontrado == null) return ResponseEntity.notFound().build();
+        if (jogadorRepository.existsById(id)) {
+            jogador.setId(id);
+            Jogador jogadorAtualizado = jogadorRepository.save(jogador);
+            return ResponseEntity.ok(jogadorAtualizado);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-        jogadores.remove(jogadorEncontrado);
-        jogador.setId(id);
-        jogadores.add(jogador);
-
-        return ResponseEntity.ok(jogador);
+    @GetMapping("/nome/{nome_jogador}")
+    public List<Jogador> findByNome(@PathVariable String nome_jogador) {
+        return jogadorRepository.findByNome_jogador(nome_jogador);
     }
 }
