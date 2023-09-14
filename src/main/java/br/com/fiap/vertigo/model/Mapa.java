@@ -1,9 +1,6 @@
 package br.com.fiap.vertigo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -11,12 +8,16 @@ import java.util.Objects;
 public class Mapa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_MAPA")
     private Long id;
+    @Column(name = "NM_MAPA")
     private String nome_mapa;
 
     public Mapa(Long id, String nome_mapa) {
         this.id = id;
         this.nome_mapa = nome_mapa;
+    }
+    public Mapa() {
     }
 
     public Long getId() {

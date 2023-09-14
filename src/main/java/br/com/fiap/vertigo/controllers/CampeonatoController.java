@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/campeonatos")
 public class CampeonatoController {
 
     @Autowired
@@ -28,16 +29,16 @@ public class CampeonatoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(campeonato);
     }
 
-    @GetMapping("/campeonatos/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Campeonato> show(@PathVariable Long id) {return ResponseEntity.ok(getCampeonatoById(id));}
 
-    @DeleteMapping("/campeonatos/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> destroy (@PathVariable Long id){
         campeonatoRepository.delete(getCampeonatoById(id));
 
         return ResponseEntity.noContent().build();}
 
-    @PutMapping("/campeonatos/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Campeonato> update(@PathVariable Long id, @RequestBody Campeonato campeonato) {
         getCampeonatoById(id);
         campeonato.setId(id);

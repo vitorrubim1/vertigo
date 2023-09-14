@@ -13,38 +13,43 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/partidas")
 public class PartidaController {
 
     @Autowired
     PartidaRepository partidaRepository;
 
     @GetMapping
-    public List<Partida> index() {
-        return partidaRepository.findAll();
+    public ResponseEntity<List<Partida>> getAllPartidas() {
+        List<Partida> partidas = partidaRepository.findAll();
+        return ResponseEntity.ok(partidas);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Partida> getPartida(@PathVariable Long id) {
+        Partida partida = getPartidaById(id);
+        return ResponseEntity.ok(partida);
     }
 
     @PostMapping
-    public ResponseEntity<Partida> create(@RequestBody Partida partida) {
-        partidaRepository.save(partida);
-        return ResponseEntity.status(HttpStatus.CREATED).body(partida);
+    public ResponseEntity<Partida> createPartida(@RequestBody Partida partida) {
+        Partida savedPartida = partidaRepository.save(partida);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedPartida);
     }
 
-    @GetMapping("/partidas/{id}")
-    public ResponseEntity<Partida> show(@PathVariable Long id) {return ResponseEntity.ok(getPartidaById(id));}
+    @PutMapping("/{id}")
+    public ResponseEntity<Partida> updatePartida(@PathVariable Long id, @RequestBody Partida updatedPartida) {
+        Partida existingPartida = getPartidaById(id);
+        updatedPartida.setId(existingPartida.getId());
+        Partida savedPartida = partidaRepository.save(updatedPartida);
+        return ResponseEntity.ok(savedPartida);
+    }
 
-    @DeleteMapping("/partidas/{id}")
-    public ResponseEntity<Object> destroy (@PathVariable Long id){
-        partidaRepository.delete(getPartidaById(id));
-
-        return ResponseEntity.noContent().build();}
-
-    @PutMapping("/partidas/{id}")
-    public ResponseEntity<Partida> update(@PathVariable Long id, @RequestBody Partida partida) {
-        getPartidaById(id);
-        partida.setId(id);
-        partidaRepository.save(partida);
-
-        return ResponseEntity.ok(partida);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePartida(@PathVariable Long id) {
+        Partida partida = getPartidaById(id);
+        partidaRepository.delete(partida);
+        return ResponseEntity.noContent().build();
     }
     private Partida getPartidaById(Long id) {
         return partidaRepository.findById(id).orElseThrow(RuntimeException::new);

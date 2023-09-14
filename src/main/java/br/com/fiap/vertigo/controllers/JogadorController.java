@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/jogadores")
 public class JogadorController {
 
     @Autowired
@@ -31,13 +32,13 @@ public class JogadorController {
     @GetMapping("/{id}")
     public ResponseEntity<Jogador> show(@PathVariable Long id) {return ResponseEntity.ok(getJogadorById(id));}
 
-    @DeleteMapping("/jogadores/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> destroy (@PathVariable Long id){
         jogadorRepository.delete(getJogadorById(id));
 
         return ResponseEntity.noContent().build();}
 
-    @PutMapping("/jogadores/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Jogador> update(@PathVariable Long id, @RequestBody Jogador jogador) {
         getJogadorById(id);
         jogador.setId(id);

@@ -1,9 +1,6 @@
 package br.com.fiap.vertigo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -11,17 +8,29 @@ import java.util.Objects;
 public class Jogador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @Column(name = "ID_JOGADOR")
+    private Long id;
+
+    @Column(name = "NM_JOGADOR")
     private String nome_jogador;
+
+    @Column(name = "NUMERO_PARTIDA")
     private int numero_partida;
+
+    @Column(name = "KILL")
     private int kill;
+
+    @Column(name = "DEATH")
     private int death;
-    private Long time;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_TIME")
+    private Time time;
 
     public Jogador() {
     }
 
-    public Jogador(Long id, String nome_jogador, int numero_partida, int kill, int death, Long time) {
+    public Jogador(Long id, String nome_jogador, int numero_partida, int kill, int death, Time time) {
         this.id = id;
         this.nome_jogador = nome_jogador;
         this.numero_partida = numero_partida;
@@ -70,11 +79,11 @@ public class Jogador {
         this.death = death;
     }
 
-    public Long getTime() {
+    public Time getTime() {
         return time;
     }
 
-    public void setTime(Long time) {
+    public void setTime(Time time) {
         this.time = time;
     }
 

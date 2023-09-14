@@ -1,9 +1,6 @@
 package br.com.fiap.vertigo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -15,10 +12,20 @@ public class Partida {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Time[] time;
-    private LocalDateTime data_partida;
+    @ManyToOne
+    @JoinColumn(name = "ID_TIME")
+    private Time time;
+    @ManyToOne
     private Campeonato nome_campeonato;
+
+    @Column(name = "DT_PARTIDA")
+    private LocalDateTime data_partida;
+
+    @Column(name = "MORTES")
     private int mortes;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ID_MAPA")
     private Mapa mapa;
 
 
@@ -31,9 +38,9 @@ public class Partida {
         this.id = id;
     }
 
-    public Time[] getTime() {return time;}
+    public Time getTime() {return time;}
 
-    public void setTime(Time[] time) {
+    public void setTime(Time time) {
         this.time = time;
     }
 
@@ -80,8 +87,12 @@ public class Partida {
         if (getClass() != obj.getClass())
             return false;
         Partida other = (Partida) obj;
-        if (!Arrays.equals(time, other.time))
+        if (time == null) {
+            if (other.time != null)
+                return false;
+        } else if (!time.getId().equals(other.time.getId())) {
             return false;
+        }
         if (data_partida == null) {
             if (other.data_partida != null)
                 return false;
@@ -104,6 +115,7 @@ public class Partida {
         return true;
     }
 
+
     @Override
     public int hashCode() {
         return Objects.hash(id, time, data_partida, nome_campeonato, mortes, mapa);
@@ -113,7 +125,7 @@ public class Partida {
     public String toString() {
         return "Partida{" +
                 "id=" + id +
-                ", time=" + Arrays.toString(time) +
+                ", time=" + time +
                 ", data_partida=" + data_partida +
                 ", nome_campeonato=" + nome_campeonato +
                 ", mortes=" + mortes +

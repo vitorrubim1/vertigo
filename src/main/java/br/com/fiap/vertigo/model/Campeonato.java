@@ -1,24 +1,29 @@
 package br.com.fiap.vertigo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Entity
 public class Campeonato {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_CAMPEONATO")
     private Long id;
+
+    @Column(name = "NM_CAMPEONATO")
     private String nome_campeonato;
+
+    @Column(name = "QT_PARTIDA")
     private int quantidade_partida;
-    private Partida[] proximas_partidas;
+
+    @OneToMany(mappedBy = "nome_campeonato", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Partida> proximas_partidas;
     
     public Campeonato() { }
 
-    public Campeonato(Long id, String nome_campeonato, int quantidade_partida, Partida[] proximas_partidas) {
+    public Campeonato(Long id, String nome_campeonato, int quantidade_partida, List<Partida>proximas_partidas) {
         this.id = id;
         this.nome_campeonato = nome_campeonato;
         this.quantidade_partida = quantidade_partida;
@@ -45,11 +50,11 @@ public class Campeonato {
         this.quantidade_partida = quantidade_partida;
     }
 
-    public Partida[] getProximas_partidas() {
+    public List<Partida> getProximas_partidas() {
         return proximas_partidas;
     }
 
-    public void setProximas_partidas(Partida[] proximas_partidas) {
+    public void setProximas_partidas(List<Partida> proximas_partidas) {
         this.proximas_partidas = proximas_partidas;
     }
 
@@ -59,9 +64,19 @@ public class Campeonato {
         int result = 1;
         result = prime * result + ((nome_campeonato == null) ? 0 : nome_campeonato.hashCode());
         result = prime * result + quantidade_partida;
-        result = prime * result + Arrays.hashCode(proximas_partidas);
+        int partidasHash = 0;
+        if (proximas_partidas != null) {
+            for (Partida partida : proximas_partidas) {
+                if (partida != null && partida.getId() != null) {
+                    partidasHash += partida.getId().hashCode();
+                }
+            }
+        }
+        result = prime * result + partidasHash;
+
         return result;
     }
+
 
     @Override
     public boolean equals(Object obj) {
@@ -81,7 +96,10 @@ public class Campeonato {
             return false;
         if (quantidade_partida != other.quantidade_partida)
             return false;
-        if (!Arrays.equals(proximas_partidas, other.proximas_partidas))
+        if (proximas_partidas == null) {
+            if (other.proximas_partidas != null)
+                return false;
+        } else if (!proximas_partidas.equals(other.proximas_partidas))
             return false;
         return true;
     }
@@ -90,6 +108,6 @@ public class Campeonato {
     public String toString() {
         return "Campeonato [id=" + id + ", nome_campeonato=" + nome_campeonato +
                 ", quantidade_partida=" + quantidade_partida +
-                ", proximas_partidas=" + Arrays.toString(proximas_partidas) + "]";
+                ", proximas_partidas=" + proximas_partidas + "]";
     }
 }
