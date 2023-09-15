@@ -2,15 +2,13 @@ package br.com.fiap.vertigo.controllers;
 
 import br.com.fiap.vertigo.model.Usuario;
 import br.com.fiap.vertigo.repository.UsuarioRepository;
-import org.springframework.beans.BeanUtils;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class UsuarioController {
@@ -41,7 +39,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/usuarios/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario usuario) {
+    public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody @Valid Usuario usuario) {
         getUsuarioById(id);
         usuario.setId(id);
         repository.save(usuario);

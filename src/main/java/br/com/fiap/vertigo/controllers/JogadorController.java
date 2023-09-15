@@ -1,7 +1,6 @@
 package br.com.fiap.vertigo.controllers;
 
 import br.com.fiap.vertigo.model.Jogador;
-import br.com.fiap.vertigo.model.Mapa;
 import br.com.fiap.vertigo.repository.JogadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/jogadores")
