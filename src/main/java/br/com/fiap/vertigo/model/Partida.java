@@ -13,15 +13,12 @@ public class Partida {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "ID_TIME")
     private Time time;
     @ManyToOne
     private Campeonato nome_campeonato;
 
-    @Column(name = "DT_PARTIDA")
     private LocalDateTime data_partida;
 
-    @Column(name = "MORTES")
     private int mortes;
 
     @ManyToOne(fetch = FetchType.EAGER)

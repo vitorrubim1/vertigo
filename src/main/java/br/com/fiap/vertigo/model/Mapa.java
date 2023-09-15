@@ -8,9 +8,7 @@ import java.util.Objects;
 public class Mapa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_MAPA")
     private Long id;
-    @Column(name = "NM_MAPA")
     private String nome_mapa;
 
     public Mapa(Long id, String nome_mapa) {

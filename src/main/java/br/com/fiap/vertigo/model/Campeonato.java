@@ -12,10 +12,8 @@ public class Campeonato {
     @Column(name = "ID_CAMPEONATO")
     private Long id;
 
-    @Column(name = "NM_CAMPEONATO")
     private String nome_campeonato;
 
-    @Column(name = "QT_PARTIDA")
     private int quantidade_partida;
 
     @OneToMany(mappedBy = "nome_campeonato", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

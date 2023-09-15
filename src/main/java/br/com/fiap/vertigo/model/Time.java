@@ -8,22 +8,16 @@ import java.util.Objects;
 public class Time {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_TIME")
     private Long id;
 
-    @Column(name = "VITORIAS_TIME")
     private int vitorias;
 
-    @Column(name = "DERROTAS_TIME")
     private int derrotas;
 
-    @Column(name = "EMPATES_TIME")
     private int empates;
 
-    @Column(name = "IMAGEM_TIME")
     private String imagem;
 
-    @Column(name = "NM_TIME")
     private String nome;
 
     public Time(Long id, int vitorias, int derrotas, int empates, String imagem, String nome) {

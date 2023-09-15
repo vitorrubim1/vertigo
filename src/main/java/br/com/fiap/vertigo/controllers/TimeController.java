@@ -30,25 +30,28 @@ public class TimeController {
     }
 
     @GetMapping("/times/{id}")
-    public ResponseEntity<Time> show(@PathVariable Long id)
-        {return ResponseEntity.ok(getTimeById(id));}
+    public ResponseEntity<Time> show(@PathVariable Long id) {
+        return ResponseEntity.ok(getTimeById(id));
+    }
 
     @DeleteMapping("/times/{id}")
-        public ResponseEntity<Object> destroy (@PathVariable Long id){
-            timeRepository.delete(getTimeById(id));
+    public ResponseEntity<Object> destroy(@PathVariable Long id) {
+        timeRepository.delete(getTimeById(id));
+        return ResponseEntity.noContent().build();
+    }
 
-            return ResponseEntity.noContent().build();}
     @PutMapping("/times/{id}")
-        public ResponseEntity<Time> update (@PathVariable Long id, @RequestBody Time time){
-            getTimeById(id);
-            time.setId(id);
-            timeRepository.save(time);
+    public ResponseEntity<Time> update(@PathVariable Long id, @RequestBody Time time) {
+        getTimeById(id);
+        time.setId(id);
+        timeRepository.save(time);
 
-            return ResponseEntity.ok(time);}
-    private Time getTimeById (Long id){
-            return timeRepository.findById(id).orElseThrow(RuntimeException::new);
-        }
+        return ResponseEntity.ok(time);
+    }
 
+    private Time getTimeById(Long id) {
+        return timeRepository.findById(id).orElseThrow(RuntimeException::new);
+    }
 }
 
 
