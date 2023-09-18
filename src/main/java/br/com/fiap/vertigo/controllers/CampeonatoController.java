@@ -1,7 +1,6 @@
 package br.com.fiap.vertigo.controllers;
 
 import br.com.fiap.vertigo.model.Campeonato;
-import br.com.fiap.vertigo.model.Jogador;
 import br.com.fiap.vertigo.repository.CampeonatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

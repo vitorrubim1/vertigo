@@ -1,7 +1,6 @@
 package br.com.fiap.vertigo.controllers;
 
 import br.com.fiap.vertigo.model.Partida;
-import br.com.fiap.vertigo.model.Time;
 import br.com.fiap.vertigo.model.Usuario;
 import br.com.fiap.vertigo.repository.PartidaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
