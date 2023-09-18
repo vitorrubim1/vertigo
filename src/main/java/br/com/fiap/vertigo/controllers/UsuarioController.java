@@ -20,25 +20,25 @@ public class UsuarioController {
         return repository.findAll();
     }
 
-    @PostMapping("/usuarios")
+    @PostMapping("/usuario")
     public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
         repository.save(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
     }
 
-    @GetMapping("/usuarios/{id}")
+    @GetMapping("/usuario/{id}")
     public ResponseEntity<Usuario> show(@PathVariable Long id) {
         return ResponseEntity.ok(getUsuarioById(id));
     }
 
-    @DeleteMapping("/usuarios/{id}")
+    @DeleteMapping("/usuario/{id}")
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
         repository.delete(getUsuarioById(id));
 
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/usuarios/{id}")
+    @PutMapping("/usuario/{id}")
     public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody @Valid Usuario usuario) {
         getUsuarioById(id);
         usuario.setId(id);

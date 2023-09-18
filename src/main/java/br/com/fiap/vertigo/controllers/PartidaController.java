@@ -12,31 +12,29 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/partidas")
 public class PartidaController {
-
     @Autowired
     PartidaRepository partidaRepository;
 
-    @GetMapping
+    @GetMapping("/partidas")
     public ResponseEntity<List<Partida>> getAllPartidas() {
         List<Partida> partidas = partidaRepository.findAll();
         return ResponseEntity.ok(partidas);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/partida/{id}")
     public ResponseEntity<Partida> getPartida(@PathVariable Long id) {
         Partida partida = getPartidaById(id);
         return ResponseEntity.ok(partida);
     }
 
-    @PostMapping
+    @PostMapping("/partida")
     public ResponseEntity<Partida> createPartida(@RequestBody Partida partida) {
         Partida savedPartida = partidaRepository.save(partida);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPartida);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/partida/{id}")
     public ResponseEntity<Partida> updatePartida(@PathVariable Long id, @RequestBody Partida updatedPartida) {
         Partida existingPartida = getPartidaById(id);
         updatedPartida.setId(existingPartida.getId());
@@ -44,7 +42,7 @@ public class PartidaController {
         return ResponseEntity.ok(savedPartida);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/partida/{id}")
     public ResponseEntity<Void> deletePartida(@PathVariable Long id) {
         Partida partida = getPartidaById(id);
         partidaRepository.delete(partida);

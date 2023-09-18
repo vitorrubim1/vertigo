@@ -10,33 +10,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/campeonatos")
 public class CampeonatoController {
-
     @Autowired
     CampeonatoRepository campeonatoRepository;
 
-    @GetMapping
+    @GetMapping("/campeonatos")
     public List<Campeonato> index() {
         return campeonatoRepository.findAll();
     }
 
-    @PostMapping
+    @PostMapping("/campeonato")
     public ResponseEntity<Campeonato> create(@RequestBody Campeonato campeonato) {
         campeonatoRepository.save(campeonato);
         return ResponseEntity.status(HttpStatus.CREATED).body(campeonato);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/campeonato/{id}")
     public ResponseEntity<Campeonato> show(@PathVariable Long id) {return ResponseEntity.ok(getCampeonatoById(id));}
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/campeonato/{id}")
     public ResponseEntity<Object> destroy (@PathVariable Long id){
         campeonatoRepository.delete(getCampeonatoById(id));
 
         return ResponseEntity.noContent().build();}
 
-    @PutMapping("/{id}")
+    @PutMapping("/campeonato/{id}")
     public ResponseEntity<Campeonato> update(@PathVariable Long id, @RequestBody Campeonato campeonato) {
         getCampeonatoById(id);
         campeonato.setId(id);

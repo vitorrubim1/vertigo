@@ -12,35 +12,34 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/times")
 public class TimeController {
 
     @Autowired
     TimeRepository timeRepository;
 
-    @GetMapping
+    @GetMapping("/times")
     public List<Time> index() {
         return timeRepository.findAll();
     }
 
-    @PostMapping
+    @PostMapping("/time")
     public ResponseEntity<Time> create(@RequestBody Time time) {
         timeRepository.save(time);
         return ResponseEntity.status(HttpStatus.CREATED).body(time);
     }
 
-    @GetMapping("/times/{id}")
+    @GetMapping("/time/{id}")
     public ResponseEntity<Time> show(@PathVariable Long id) {
         return ResponseEntity.ok(getTimeById(id));
-    }
+    };
 
-    @DeleteMapping("/times/{id}")
+    @DeleteMapping("/time/{id}")
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
         timeRepository.delete(getTimeById(id));
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/times/{id}")
+    @PutMapping("/time/{id}")
     public ResponseEntity<Time> update(@PathVariable Long id, @RequestBody Time time) {
         getTimeById(id);
         time.setId(id);

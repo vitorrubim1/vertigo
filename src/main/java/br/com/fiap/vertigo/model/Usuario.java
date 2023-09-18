@@ -11,16 +11,20 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotBlank
     private String nome;
+
     @NotBlank
     @Email
     private String email;
+
     @NotBlank
     private String senha;
 }
