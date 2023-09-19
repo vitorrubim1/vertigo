@@ -25,6 +25,7 @@ public class Campeonato {
     private String nome_campeonato;
 
     @NotNull
-    @OneToMany(mappedBy = "nome_campeonato", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Partida> proximas_partidas;
+    @ElementCollection
+    @Column(name = "PROXIMAS_PARTIDAS")
+    private List<Long> proximas_partidas;
 }

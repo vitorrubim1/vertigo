@@ -26,7 +26,9 @@ public class CampeonatoController {
     }
 
     @GetMapping("/campeonato/{id}")
-    public ResponseEntity<Campeonato> show(@PathVariable Long id) {return ResponseEntity.ok(getCampeonatoById(id));}
+    public ResponseEntity<Campeonato> show(@PathVariable Long id) {
+        return ResponseEntity.ok(getCampeonatoById(id));
+    }
 
     @DeleteMapping("/campeonato/{id}")
     public ResponseEntity<Object> destroy (@PathVariable Long id){
@@ -35,7 +37,7 @@ public class CampeonatoController {
         return ResponseEntity.noContent().build();}
 
     @PutMapping("/campeonato/{id}")
-    public ResponseEntity<Campeonato> update(@PathVariable Long id, @RequestBody Campeonato campeonato) {
+    public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody Campeonato campeonato) {
         getCampeonatoById(id);
         campeonato.setId(id);
         campeonatoRepository.save(campeonato);
