@@ -3,6 +3,7 @@ package br.com.fiap.vertigo.controllers;
 import br.com.fiap.vertigo.model.Partida;
 import br.com.fiap.vertigo.model.Usuario;
 import br.com.fiap.vertigo.repository.PartidaRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +30,13 @@ public class PartidaController {
     }
 
     @PostMapping("/partida")
-    public ResponseEntity<Partida> createPartida(@RequestBody Partida partida) {
+    public ResponseEntity<Partida> createPartida(@RequestBody @Valid Partida partida) {
         Partida savedPartida = partidaRepository.save(partida);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPartida);
     }
 
     @PutMapping("/partida/{id}")
-    public ResponseEntity<Partida> updatePartida(@PathVariable Long id, @RequestBody Partida updatedPartida) {
+    public ResponseEntity<Partida> updatePartida(@PathVariable Long id, @RequestBody @Valid Partida updatedPartida) {
         Partida existingPartida = getPartidaById(id);
         updatedPartida.setId(existingPartida.getId());
         Partida savedPartida = partidaRepository.save(updatedPartida);

@@ -21,7 +21,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/usuario")
-    public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> create(@RequestBody @Valid Usuario usuario) {
         repository.save(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
     }

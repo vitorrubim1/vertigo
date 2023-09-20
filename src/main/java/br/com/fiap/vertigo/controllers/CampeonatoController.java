@@ -2,6 +2,7 @@ package br.com.fiap.vertigo.controllers;
 
 import br.com.fiap.vertigo.model.Campeonato;
 import br.com.fiap.vertigo.repository.CampeonatoRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class CampeonatoController {
     }
 
     @PostMapping("/campeonato")
-    public ResponseEntity<Campeonato> create(@RequestBody Campeonato campeonato) {
+    public ResponseEntity<Campeonato> create(@RequestBody @Valid Campeonato campeonato) {
         campeonatoRepository.save(campeonato);
         return ResponseEntity.status(HttpStatus.CREATED).body(campeonato);
     }
@@ -37,7 +38,7 @@ public class CampeonatoController {
         return ResponseEntity.noContent().build();}
 
     @PutMapping("/campeonato/{id}")
-    public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody Campeonato campeonato) {
+    public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody @Valid Campeonato campeonato) {
         getCampeonatoById(id);
         campeonato.setId(id);
         campeonatoRepository.save(campeonato);

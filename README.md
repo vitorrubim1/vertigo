@@ -61,16 +61,14 @@ Lista todos os campeonatos.
                     { 
                         "vitorias": 12,
                         "derrotas": 6,
-                        
                         "imagem":  "https://img.png.com",
-                        "nome": "Loud",
+                        "nome": "Loud"
                     },
                     { 
                         "vitorias": 14,
                         "derrotas": 4,
-                         7,
                         "imagem":  "https://img.png.com",
-                        "nome": "Pain",
+                        "nome": "Pain"
                     }
                 ],
                 "data_partida": "Mon Aug 21 2023 21:21:56"
@@ -100,13 +98,10 @@ Atualiza um campeonato.
 **Exemplo do body da requisição:**
 ```json
 {
-    "nome_campeonato": "LCK 2 SPLIT",
-    "proximas_partidas": [
-        {
-            "partidas": [1]
-        }
-    ]
+  "nome_campeonato": "LCK",
+  "proximas_partidas": [1, 2]
 }
+
 ```
 
 #### `DELETE /campeonato/{id}`
@@ -217,13 +212,9 @@ Cadastra uma partida.
 **Exemplo do body da requisição:**
 ```json
 {
-  "time": {
-    "id": 1
-  },
-  "nome_campeonato": {
-    "id": 1
-  },
-  "data_partida": "2023-09-18T14:30:00"
+  "times": [2, 3],
+  "id_campeonato": 1,
+  "data_partida": "2023-09-30T14:30:00"
 }
 
 ```
@@ -235,13 +226,9 @@ Atualiza uma partida.
 **Exemplo do body da requisição:**
 ```json
 {
-  "time": {
-    "id": 1
-  },
-  "nome_campeonato": {
-    "id": 1
-  },
-  "data_partida": "2023-09-19T14:20:00"
+  "times": [1, 8],
+  "id_campeonato": 1,
+  "data_partida": "2023-09-20T12:00:00"
 }
 ```
 
