@@ -21,7 +21,7 @@ public class Campeonato {
     private Long id;
 
     @Column(name = "NM_CAMPEONATO")
-    @NotBlank
+    @NotBlank(message = "O nome do campeonato não pode estar vazío.")
     private String nome_campeonato;
 
     @NotNull

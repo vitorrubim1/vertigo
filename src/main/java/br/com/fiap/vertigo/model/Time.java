@@ -17,16 +17,16 @@ public class Time {
     private Long id;
 
     @NotNull
-    @PositiveOrZero
+    @PositiveOrZero(message = "As vitórias precisa ter um número maior ou igual a zero")
     private int vitorias;
 
     @NotNull
-    @PositiveOrZero
+    @PositiveOrZero(message = "As derrotas precisa ter um número maior ou igual a zero")
     private int derrotas;
 
-    @NotBlank
+    @NotBlank(message = "O imagem do time não pode estar vazío.")
     private String imagem;
 
-    @NotBlank
+    @NotBlank(message = "O nome do time não pode estar vazío.")
     private String nome;
 }

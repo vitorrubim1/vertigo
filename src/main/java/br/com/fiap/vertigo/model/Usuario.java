@@ -18,14 +18,14 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "O nome do usuário não pode estar vazío.")
     private String nome;
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "O nome do email não pode estar vazío.")
+    @Email(message = "O email tem que ser válido.")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "A senha do usuário não pode estar vazía.")
     private String senha;
 
 }

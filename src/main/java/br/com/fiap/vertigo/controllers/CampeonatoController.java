@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class CampeonatoController {
         return ResponseEntity.ok(campeonato);
     }
     private Campeonato getCampeonatoById(Long id) {
-        return campeonatoRepository.findById(id).orElseThrow(RuntimeException::new);
+        return campeonatoRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível encontrar o campeonato com id: " + id));
     }
 }
