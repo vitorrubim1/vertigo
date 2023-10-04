@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,9 +18,13 @@ public class Partida {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_TIME")
-    private Time[] time;
+    @ManyToMany
+    @JoinTable(
+            name = "partida_times",
+            joinColumns = @JoinColumn(name = "ID_PARTIDA"),
+            inverseJoinColumns = @JoinColumn(name = "ID_TIME")
+    )
+    private List<Time> times;
 
     @ManyToOne
     @JoinColumn(name = "ID_CAMPEONATO")

@@ -24,8 +24,6 @@ public class Campeonato {
     @NotBlank(message = "O nome do campeonato não pode estar vazío.")
     private String nome_campeonato;
 
-    @NotNull
-    @ElementCollection
-    @Column(name = "PROXIMAS_PARTIDAS")
-    private List<Long> proximas_partidas;
+    @OneToMany(mappedBy = "nome_campeonato")
+    private List<Partida> proximas_partidas;
 }

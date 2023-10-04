@@ -1,9 +1,12 @@
 package br.com.fiap.vertigo.controllers;
 
+import br.com.fiap.vertigo.model.Campeonato;
 import br.com.fiap.vertigo.model.Partida;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import br.com.fiap.vertigo.model.Time;
-import br.com.fiap.vertigo.model.Usuario;
+import br.com.fiap.vertigo.repository.CampeonatoRepository;
 import br.com.fiap.vertigo.repository.PartidaRepository;
+import br.com.fiap.vertigo.repository.TimeRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,15 +14,39 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PartidaController {
     @Autowired
     PartidaRepository partidaRepository;
-    
-    TimeController timeController = new TimeController();
+    @Autowired
+    private TimeRepository timeRepository;
+    @Autowired
+    private CampeonatoRepository campeonatoRepository;
+
+    @PostMapping("/partida")
+    public ResponseEntity<Partida> createPartida(@RequestBody @Valid Partida partida) {
+        List<Time> times = new ArrayList<>();
+        for (Time time : partida.getTimes()) {
+            Optional<Time> existingTime = timeRepository.findById(time.getId());
+            existingTime.ifPresent(times::add);
+        }
+
+        Optional<Campeonato> existingCampeonato = campeonatoRepository.findById(partida.getNome_campeonato().getId());
+        Campeonato campeonato = existingCampeonato.orElse(null);
+
+        partida.setTimes(times);
+        partida.setNome_campeonato(campeonato);
+
+        Partida savedPartida = partidaRepository.save(partida);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedPartida);
+    }
+
+
 
     @GetMapping("/partidas")
     public ResponseEntity<List<Partida>> getAllPartidas() {
@@ -33,21 +60,7 @@ public class PartidaController {
         return ResponseEntity.ok(partida);
     }
 
-    @PostMapping("/partida")
-    public ResponseEntity<Partida> createPartida(@RequestBody @Valid Partida partida) {
-        System.out.println("\n\n teste: " + partida);
 
-        // ### Isso aqui era para realizar validação para saber se os times que estão vindo existem
-        //        for (Time time : partida.getTime()) {
-        //            Long time_id = time.getId();
-        //
-        //            timeController.timeRepository.findById(time_id)
-        //                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível encontrar o time com id: " + time_id));
-        //        }
-
-        Partida savedPartida = partidaRepository.save(partida);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedPartida);
-    }
 
     @PutMapping("/partida/{id}")
     public ResponseEntity<Partida> updatePartida(@PathVariable Long id, @RequestBody @Valid Partida updatedPartida) {
