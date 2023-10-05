@@ -22,9 +22,9 @@ public class CampeonatoController {
     }
 
     @PostMapping("/campeonato")
-    public ResponseEntity<Campeonato> create(@RequestBody @Valid Campeonato campeonato) {
-        campeonatoRepository.save(campeonato);
-        return ResponseEntity.status(HttpStatus.CREATED).body(campeonato);
+    public ResponseEntity<Campeonato> createCampeonato(@RequestBody @Valid Campeonato campeonato) {
+        Campeonato savedCampeonato = campeonatoRepository.save(campeonato);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedCampeonato);
     }
 
     @GetMapping("/campeonato/{id}")

@@ -47,7 +47,6 @@ public class PartidaController {
     }
 
 
-
     @GetMapping("/partidas")
     public ResponseEntity<List<Partida>> getAllPartidas() {
         List<Partida> partidas = partidaRepository.findAll();
