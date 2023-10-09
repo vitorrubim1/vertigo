@@ -1,5 +1,6 @@
 package br.com.fiap.vertigo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,6 +25,4 @@ public class Campeonato {
     @NotBlank(message = "O nome do campeonato não pode estar vazío.")
     private String nome_campeonato;
 
-    @OneToMany(mappedBy = "nome_campeonato")
-    private List<Partida> proximas_partidas;
 }

@@ -34,5 +34,6 @@ public class Partida {
     @FutureOrPresent(message = "A data tem que ser uma data atual ou uma data futura.")
     @NotNull(message = "A data da partida não pode estar vazío.")
     private LocalDateTime data_partida;
+
 }
 
