@@ -23,8 +23,6 @@ public class DataBaseSeeder implements CommandLineRunner  {
     TimeRepository timeRepository;
     @Autowired
     CampeonatoRepository campeonatoRepository;
-    @Autowired
-    PartidaRepository partidaRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -49,11 +47,6 @@ public class DataBaseSeeder implements CommandLineRunner  {
         campeonatoRepository.saveAll(
                 List.of(
                        new Campeonato(null, "CBLOL")
-                )
-        );
-        partidaRepository.saveAll(
-                List.of(
-                        new Partida(null,[{"id": 1}, {"id":2}],1,"2023-10-30T14:30:00")
                 )
         );
     }
