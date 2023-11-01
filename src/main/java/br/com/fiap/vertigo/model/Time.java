@@ -29,4 +29,5 @@ public class Time {
 
     @NotBlank(message = "O nome do time não pode estar vazío.")
     private String nome;
+
 }

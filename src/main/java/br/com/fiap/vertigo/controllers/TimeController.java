@@ -7,6 +7,10 @@ import br.com.fiap.vertigo.validation.RestValidationError;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +28,12 @@ public class TimeController {
     TimeRepository timeRepository;
 
     @GetMapping("/times")
-    public List<Time> index() {
-        log.info("buscando todos os times");
-        return timeRepository.findAll();
+    public ResponseEntity<Page<Time>> index(
+            @PageableDefault(size = 6, sort = "id", direction = Sort.Direction.ASC) Pageable pageRequest) {
+        Page<Time> times = timeRepository.findAllWithPagination(pageRequest);
+        return ResponseEntity.ok(times);
     }
+
 
     @PostMapping("/time")
     public ResponseEntity<Object> create(@RequestBody @Valid Time time) {

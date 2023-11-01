@@ -46,7 +46,11 @@ public class DataBaseSeeder implements CommandLineRunner  {
         );
         campeonatoRepository.saveAll(
                 List.of(
-                       new Campeonato(null, "CBLOL")
+                       new Campeonato(null, "CBLOL"),
+                       new Campeonato(null, "LCK"),
+                        new Campeonato(null, "LCS"),
+                        new Campeonato(null, "LPL"),
+                        new Campeonato(null, "LEC")
                 )
         );
     }

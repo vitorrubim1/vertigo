@@ -2,6 +2,11 @@ package br.com.fiap.vertigo.controllers;
 
 import br.com.fiap.vertigo.model.Campeonato;
 import br.com.fiap.vertigo.model.Partida;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import br.com.fiap.vertigo.model.Time;
 import br.com.fiap.vertigo.repository.CampeonatoRepository;
@@ -14,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,10 +54,18 @@ public class PartidaController {
 
 
     @GetMapping("/partidas")
-    public ResponseEntity<List<Partida>> getAllPartidas() {
-        List<Partida> partidas = partidaRepository.findAll();
+    public ResponseEntity<Page<Partida>> getAllPartidas(
+            @PageableDefault(size = 2, sort = "id", direction = Sort.Direction.ASC) Pageable pageRequest,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataPartida) {
+        Page<Partida> partidas;
+        if (dataPartida != null) {
+            partidas = partidaRepository.findByDataPartida(dataPartida, pageRequest);
+        } else {
+            partidas = partidaRepository.findAll(pageRequest);
+        }
         return ResponseEntity.ok(partidas);
     }
+
 
     @GetMapping("/partida/{id}")
     public ResponseEntity<Partida> getPartida(@PathVariable Long id) {
