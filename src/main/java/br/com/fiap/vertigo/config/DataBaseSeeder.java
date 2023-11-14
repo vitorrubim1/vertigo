@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 @Configuration
+@Profile("dev")
 public class DataBaseSeeder implements CommandLineRunner  {
 
     @Autowired
