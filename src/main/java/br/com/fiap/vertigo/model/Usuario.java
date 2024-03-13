@@ -1,31 +1,76 @@
 package br.com.fiap.vertigo.model;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 @Entity
-public class Usuario {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Usuario implements UserDetails {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O nome do usuário não pode estar vazío.")
+    @NotBlank
     private String nome;
 
-    @NotBlank(message = "O nome do email não pode estar vazío.")
-    @Email(message = "O email tem que ser válido.")
+    @Email @NotBlank
     private String email;
 
-    @NotBlank(message = "A senha do usuário não pode estar vazía.")
+    @Size(min = 8)
     private String senha;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public Authentication toAuthentication() {
+        return new UsernamePasswordAuthenticationToken(email, null, getAuthorities());
+    }
 
 }
